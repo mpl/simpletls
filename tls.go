@@ -15,7 +15,9 @@ import (
 	"strings"
 	"time"
 
+	"golang.org/x/crypto/acme"
 	"golang.org/x/crypto/acme/autocert"
+	"golang.org/x/net/http2"
 )
 
 var (
@@ -48,7 +50,7 @@ func Config(hostport string) (*tls.Config, error) {
 		return &tls.Config{
 			Rand:           rand.Reader,
 			Time:           time.Now,
-			NextProtos:     []string{"http/1.1"},
+			NextProtos:     []string{acme.ALPNProto, http2.NextProtoTLS, "http/1.1"},
 			GetCertificate: m.GetCertificate,
 		}, nil
 	}
