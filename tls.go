@@ -51,6 +51,7 @@ func Config(hostport string) (*tls.Config, error) {
 			Rand:           rand.Reader,
 			Time:           time.Now,
 			NextProtos:     []string{acme.ALPNProto, http2.NextProtoTLS, "http/1.1"},
+			MinVersion:     tls.VersionTLS12,
 			GetCertificate: m.GetCertificate,
 		}, nil
 	}
@@ -61,7 +62,8 @@ func Config(hostport string) (*tls.Config, error) {
 	return &tls.Config{
 		Rand:         rand.Reader,
 		Time:         time.Now,
-		NextProtos:   []string{"http/1.1"},
+		NextProtos:   []string{http2.NextProtoTLS, "http/1.1"},
+		MinVersion:   tls.VersionTLS12,
 		Certificates: []tls.Certificate{cert},
 	}, nil
 }
